@@ -1,0 +1,692 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>成都旅游网 · 一座来了就不想走的城市</title>
+<style>
+:root{
+  --bg:#faf6ef; --card:#ffffff; --text:#4a4238; --muted:#8a7f71;
+  --green:#2e7d5b; --green-d:#1f5f43; --green-l:#e7f2ec;
+  --red:#d9472e; --red-l:#fdece7; --gold:#c99a2e; --gold-l:#fbf3df;
+  --line:#ece4d7; --shadow:0 8px 28px rgba(90,72,50,.10); --radius:16px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",sans-serif;background:var(--bg);color:var(--text);line-height:1.75;-webkit-font-smoothing:antialiased}
+::selection{background:var(--green);color:#fff}
+a{color:inherit}
+
+/* ===== 顶部导航 ===== */
+.nav{position:fixed;top:0;left:0;right:0;z-index:999;background:rgba(255,253,248,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{max-width:1180px;margin:0 auto;height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+.logo{font-size:22px;font-weight:800;color:var(--green-d);letter-spacing:1px;text-decoration:none;display:flex;align-items:center;gap:8px}
+.logo i{font-style:normal;font-size:24px}
+.nav-links{display:flex;gap:6px;align-items:center}
+.nav-links a{text-decoration:none;color:var(--text);font-size:15px;padding:8px 14px;border-radius:999px;transition:.25s}
+.nav-links a:hover,.nav-links a.active{color:#fff;background:var(--green)}
+
+/* ===== 首屏 Hero ===== */
+.hero{position:relative;text-align:center;padding:170px 24px 96px;background:linear-gradient(180deg,#eef6ef 0%,#f7f1e6 78%,#faf6ef 100%);overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 44px,rgba(46,125,91,.06) 44px 45px),repeating-linear-gradient(0deg,transparent 0 44px,rgba(46,125,91,.05) 44px 45px);pointer-events:none}
+.panda{position:absolute;font-size:60px;line-height:1;opacity:.8;filter:drop-shadow(0 6px 14px rgba(90,72,50,.18));animation:floaty 6s ease-in-out infinite;z-index:1}
+.panda.p1{left:7%;top:130px}
+.panda.p2{right:8%;top:100px;font-size:50px;animation-delay:1.3s}
+.panda.p3{left:13%;bottom:44px;font-size:46px;animation-delay:2.5s;transform:scaleX(-1)}
+.panda.p4{right:13%;bottom:70px;font-size:40px;animation-delay:3.7s}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(-7deg)}50%{transform:translateY(-20px) rotate(7deg)}}
+.hero-kicker{position:relative;z-index:2;display:inline-block;letter-spacing:6px;color:var(--red);font-weight:700;font-size:14.5px;background:#fff;border:1px solid var(--red-l);padding:6px 22px;border-radius:999px}
+.hero h1{position:relative;z-index:2;margin-top:22px;font-family:"STKaiti","KaiTi",serif;font-size:clamp(40px,6.5vw,70px);color:var(--green-d);letter-spacing:3px}
+.hero h1 b{color:var(--red);font-weight:900}
+.hero .sub{position:relative;z-index:2;max-width:660px;margin:18px auto 0;color:var(--muted);font-size:17px}
+.hero-stats{position:relative;z-index:2;display:flex;justify-content:center;gap:46px;margin-top:38px;flex-wrap:wrap}
+.stat{text-align:center}
+.stat b{display:block;font-size:30px;color:var(--green-d);font-family:"STKaiti","KaiTi",serif}
+.stat span{font-size:13px;color:var(--muted)}
+.hero-btns{position:relative;z-index:2;margin-top:36px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:999px;font-size:15px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:.25s;text-decoration:none;user-select:none}
+.btn-primary{background:var(--green);color:#fff;box-shadow:0 10px 24px rgba(46,125,91,.35)}
+.btn-primary:hover{background:var(--green-d);transform:translateY(-2px)}
+.btn-ghost{background:#fff;border-color:var(--green);color:var(--green)}
+.btn-ghost:hover{background:var(--green-l);transform:translateY(-2px)}
+
+/* ===== 通用区块 ===== */
+section{max-width:1180px;margin:0 auto;padding:70px 24px 6px}
+.sec-head{text-align:center;margin-bottom:44px}
+.sec-tag{display:inline-block;background:var(--gold-l);color:#a57a12;border:1px solid #eeddab;border-radius:999px;padding:4px 18px;font-size:13px;font-weight:700;letter-spacing:3px}
+.sec-title{font-size:clamp(26px,3.4vw,36px);margin-top:14px;letter-spacing:1px}
+.sec-title em{color:var(--green);font-style:normal}
+.sec-desc{color:var(--muted);margin-top:10px;font-size:15px}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:none}
+/* ===== 背景音乐播放器 ===== */
+.music-box{background:linear-gradient(135deg,#eef6f0 0%,#f9efe2 100%);border:1px solid #e6dfca;border-radius:24px;padding:34px 38px;display:flex;gap:36px;align-items:center;flex-wrap:wrap;box-shadow:var(--shadow)}
+.disc{position:relative;width:132px;height:132px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f6efe0,#cdbd8f 72%);box-shadow:inset 0 0 0 12px #f8f1e2,inset 0 0 0 14px #dcc99a,0 14px 30px rgba(60,48,30,.22);animation:spin 14s linear infinite;animation-play-state:paused;flex-shrink:0}
+.disc::after{content:"🐼";font-size:46px;position:absolute;inset:0;display:grid;place-items:center}
+.disc.playing{animation-play-state:running}
+@keyframes spin{to{transform:rotate(360deg)}}
+.music-info{flex:1;min-width:230px}
+.music-info h3{font-size:22px;color:var(--green-d);letter-spacing:1px}
+.music-info p{color:var(--muted);font-size:14px;margin-top:4px}
+.eq{display:flex;align-items:flex-end;gap:4px;height:24px;margin-top:12px}
+.eq i{width:5px;height:20%;border-radius:3px;background:var(--green);animation:eqb 1.1s ease-in-out infinite}
+.eq.paused i{animation-play-state:paused;height:22%}
+.eq i:nth-child(2){animation-delay:.14s}
+.eq i:nth-child(3){animation-delay:.28s}
+.eq i:nth-child(4){animation-delay:.42s}
+.eq i:nth-child(5){animation-delay:.56s}
+.eq i:nth-child(6){animation-delay:.70s}
+.eq i:nth-child(7){animation-delay:.84s}
+@keyframes eqb{0%,100%{height:18%}50%{height:100%}}
+.music-ctrl{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.play-btn{width:66px;height:66px;border-radius:50%;border:none;background:var(--green);color:#fff;font-size:20px;cursor:pointer;display:grid;place-items:center;box-shadow:0 10px 24px rgba(46,125,91,.4);transition:.22s}
+.play-btn:hover{transform:scale(1.08)}
+.vol{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:14px}
+input[type=range]{accent-color:var(--green);cursor:pointer;width:110px}
+.song-tip{font-size:12.5px;color:var(--muted)}
+
+/* ===== 卡片网格 ===== */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:24px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:.3s;display:flex;flex-direction:column;position:relative}
+.card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(90,72,50,.16)}
+.card.speaking{outline:3px solid var(--red);outline-offset:2px}
+.speaking-dot{position:absolute;top:14px;right:14px;width:11px;height:11px;border-radius:50%;background:var(--red);display:none;z-index:2;animation:blink 1s infinite}
+.card.speaking .speaking-dot{display:block}
+@keyframes blink{50%{opacity:.25}}
+.card-top{height:118px;display:grid;place-items:center;font-size:54px;position:relative}
+.t1{background:linear-gradient(135deg,#dff0e6,#bfe3d0)}
+.t2{background:linear-gradient(135deg,#fdeee6,#f8d9c7)}
+.t3{background:linear-gradient(135deg,#eef1f9,#d7e0f0)}
+.t4{background:linear-gradient(135deg,#fbf1dd,#f2dfae)}
+.t5{background:linear-gradient(135deg,#f3e8f6,#e2cce9)}
+.t6{background:linear-gradient(135deg,#e4f4f4,#c2e4e3)}
+.t7{background:linear-gradient(135deg,#fbecec,#f3c9c9)}
+.t8{background:linear-gradient(135deg,#eef6ea,#d3e8c8)}
+.card-top .badge{position:absolute;top:12px;left:12px;font-size:12px;background:rgba(255,255,255,.92);padding:2px 12px;border-radius:999px;color:var(--green-d);font-weight:700}
+.card-body{padding:18px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card-body h3{font-size:19px;letter-spacing:1px}
+.stars{color:#f0a72b;font-size:13px;letter-spacing:2px}
+.desc{font-size:13.5px;color:var(--muted);min-height:62px}
+.meta{display:flex;flex-wrap:wrap;gap:6px}
+.meta span{font-size:12px;background:var(--green-l);color:var(--green-d);padding:2px 10px;border-radius:999px}
+.speak-btn{margin-top:14px;display:inline-flex;align-items:center;justify-content:center;gap:6px;width:100%;border:1.5px solid var(--green);color:var(--green);background:#fff;border-radius:999px;padding:9px 0;font-size:14px;font-weight:700;cursor:pointer;transition:.22s}
+.speak-btn:hover{background:var(--green);color:#fff}
+.speak-btn.speaking{background:var(--green);color:#fff;animation:pulse 1.5s infinite}
+.speak-btn.paused{background:var(--gold);border-color:var(--gold);color:#fff}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(46,125,91,.45)}50%{box-shadow:0 0 0 12px rgba(46,125,91,0)}}
+.stop-all{display:inline-flex;align-items:center;gap:6px;border:1.5px solid #cbbfae;color:var(--muted);background:#fff;border-radius:999px;padding:8px 22px;font-size:14px;font-weight:700;cursor:pointer;transition:.2s}
+.stop-all:hover{color:var(--red);border-color:var(--red)}
+
+/* ===== 美食 ===== */
+.price{font-size:13px;color:var(--red);font-weight:700}
+.food-note{font-size:13px;color:var(--muted);margin-top:2px}
+
+/* ===== 文化 ===== */
+.culture-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px}
+.culture-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow);text-align:center;transition:.3s;display:flex;flex-direction:column;gap:10px}
+.culture-card:hover{transform:translateY(-6px)}
+.culture-card .ico{font-size:46px}
+.culture-card h3{font-size:18px}
+.culture-card p{font-size:13.5px;color:var(--muted)}
+.culture-card.speaking{outline:3px solid var(--red);outline-offset:2px}
+.culture-card .speak-btn{margin-top:auto}
+
+/* ===== 行程 ===== */
+.timeline{position:relative;max-width:780px;margin:0 auto;padding-left:34px}
+.timeline::before{content:"";position:absolute;left:9px;top:10px;bottom:10px;width:2.5px;border-radius:2px;background:linear-gradient(180deg,var(--green),var(--gold),var(--red))}
+.day{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px 26px;margin-bottom:22px;box-shadow:var(--shadow)}
+.day::before{content:attr(data-n);position:absolute;left:-34px;top:20px;width:20px;height:20px;border-radius:50%;background:var(--green);border:4px solid var(--bg);color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center}
+.day h3{color:var(--green-d);font-size:19px;display:flex;align-items:center;gap:10px}
+.day .daytag{background:var(--green-l);color:var(--green-d);font-size:12px;padding:2px 12px;border-radius:999px;font-weight:700}
+.day ul{list-style:none;margin-top:12px}
+.day li{margin:7px 0;font-size:14.5px;color:#5a5146}
+.day li b{color:var(--red)}
+.tag-free{color:var(--green);font-weight:700}
+.day-note{margin-top:10px;font-size:13px;color:var(--muted);border-top:1px dashed var(--line);padding-top:10px}
+
+/* ===== 小贴士 ===== */
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.tip{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;box-shadow:var(--shadow);display:flex;gap:14px;align-items:flex-start}
+.tip .ticon{font-size:30px;line-height:1.2}
+.tip h4{font-size:15.5px;color:var(--green-d)}
+.tip p{font-size:13.5px;color:var(--muted);margin-top:4px}
+
+/* ===== 页脚 ===== */
+footer{margin-top:96px;background:#2c2620;color:#cfc6ba;padding:56px 24px 24px}
+.foot-inner{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:34px}
+.foot-inner h4{color:#fff;font-size:16px;margin-bottom:14px;position:relative;padding-left:12px}
+.foot-inner h4::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:4px;border-radius:2px;background:var(--gold)}
+.foot-inner a{display:block;color:#b7ac9e;text-decoration:none;font-size:14px;margin:7px 0;transition:.2s}
+.foot-inner a:hover{color:#fff}
+.foot-brief{font-size:14px;line-height:2}
+.foot-bottom{max-width:1180px;margin:34px auto 0;padding-top:18px;border-top:1px solid rgba(255,255,255,.12);text-align:center;font-size:13px;color:#9c9183}
+
+/* ===== 返回顶部 ===== */
+#topBtn{position:fixed;right:26px;bottom:26px;width:46px;height:46px;border-radius:50%;border:none;background:var(--green);color:#fff;font-size:19px;cursor:pointer;opacity:0;visibility:hidden;transform:translateY(12px);transition:.3s;box-shadow:0 10px 24px rgba(46,125,91,.4);z-index:99}
+#topBtn.show{opacity:1;visibility:visible;transform:none}
+
+@media (max-width:760px){
+  .nav-links a{padding:7px 9px;font-size:13px}
+  .hero{padding:140px 18px 70px}
+  .music-box{flex-direction:column;text-align:center;padding:28px 22px}
+  .music-ctrl{justify-content:center}
+  .foot-inner{grid-template-columns:1fr}
+  .timeline{padding-left:30px}
+  .day::before{left:-30px}
+}
+</style>
+</head>
+<body>
+<!-- 顶部导航 -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="#top"><i>🐼</i>蓉城·成都旅游</a>
+    <div class="nav-links">
+      <a href="#music">背景音乐</a>
+      <a href="#spots">景点推荐</a>
+      <a href="#food">美食地图</a>
+      <a href="#culture">文化体验</a>
+      <a href="#plan">行程攻略</a>
+      <a href="#tips">出行贴士</a>
+    </div>
+  </div>
+</nav>
+
+<!-- 首屏 -->
+<header class="hero" id="top">
+  <span class="panda p1">🐼</span><span class="panda p2">🎋</span><span class="panda p3">🏮</span><span class="panda p4">🐼</span>
+  <div class="hero-kicker">✦ 天府之国 · 蓉城欢迎您 ✦</div>
+  <h1>成都 · 一座<b>来了就不想走</b>的城市</h1>
+  <p class="sub">慢下来，泡一盏盖碗茶；逛一逛烟火宽窄；撸一撸圆滚滚的大熊猫 —— 这里是成都，巴适得板！</p>
+  <div class="hero-stats">
+    <div class="stat"><b>4500+</b><span>年建城历史</span></div>
+    <div class="stat"><b>2000万+</b><span>年接待游客</span></div>
+    <div class="stat"><b>300+</b><span>公园茶馆</span></div>
+    <div class="stat"><b>100%</b><span>治愈系幸福感</span></div>
+  </div>
+  <div class="hero-btns">
+    <a class="btn btn-primary" href="#spots">🎯 开始探索</a>
+    <a class="btn btn-ghost" href="#music">🎧 先听一段成都</a>
+  </div>
+</header>
+
+<main>
+<!-- 背景音乐 -->
+<section id="music">
+  <div class="sec-head reveal">
+    <span class="sec-tag">AUDIO</span>
+    <h2 class="sec-title">🎧 城市之声 · <em>背景音乐</em></h2>
+    <p class="sec-desc">点击播放，聆听一段竹影婆娑的"成都印象"小调 —— 音源由浏览器实时合成，无需联网即可播放</p>
+  </div>
+  <div class="music-box reveal">
+    <div class="disc" id="disc"></div>
+    <div class="music-info">
+      <h3>竹影清风 · 成都印象</h3>
+      <p>原创五声音阶微音乐 · 轻柔循环</p>
+      <div class="eq paused" id="eq"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+    <div class="music-ctrl">
+      <button class="play-btn" id="bgPlay" title="播放 / 暂停">▶</button>
+      <div class="vol">🔊 <input type="range" id="vol" min="0" max="1" step="0.01" value="0.5" title="音量"></div>
+      <div class="song-tip">建议佩戴耳机 🎧<br>体验更佳</div>
+    </div>
+  </div>
+</section>
+<!-- 景点推荐 -->
+<section id="spots">
+  <div class="sec-head reveal">
+    <span class="sec-tag">SCENIC SPOTS</span>
+    <h2 class="sec-title">✨ 必打卡 · <em>八大景点</em></h2>
+    <p class="sec-desc">每一张卡片都内置"语音导览"🗣️ —— 点击按钮即可收听该景点的语音介绍（支持暂停 / 继续）</p>
+  </div>
+  <div class="cards">
+    <article class="card reveal" data-tts="成都大熊猫繁育研究基地是世界著名的大熊猫保护与科研场所，位于成都市成华区。清晨入园，可以近距离看到圆滚滚的大熊猫啃竹笋、爬树打滚，萌翻全场，是来成都必打卡的第一站！">
+      <span class="speaking-dot"></span>
+      <div class="card-top t1"><span class="badge">顶流明星</span>🐼</div>
+      <div class="card-body">
+        <h3>大熊猫繁育研究基地</h3>
+        <div class="stars">★★★★★</div>
+        <p class="desc">近距离围观"滚滚"吃播现场，建议开园即冲，上午的熊猫最活泼。</p>
+        <div class="meta"><span>📍 成华区</span><span>🎫 55元</span><span>🕗 07:30-18:00</span></div>
+        <button class="speak-btn">▶ 语音导览</button>
+      </div>
+    </article>
+    <article class="card reveal" data-tts="宽窄巷子由宽巷子、窄巷子和井巷子三条老街组成，是成都烟火气的浓缩之地。青砖黛瓦的川西院落里，茶馆麻将、川剧评书、甜品小吃云集，随便找个院子坐下，就是一整个下午的慢时光。">
+      <span class="speaking-dot"></span>
+      <div class="card-top t2"><span class="badge">市井烟火</span>🏮</div>
+      <div class="card-body">
+        <h3>宽窄巷子</h3>
+        <div class="stars">★★★★★</div>
+        <p class="desc">青砖黛瓦的老成都缩影，茶馆、小吃、文创小店一应俱全。</p>
+        <div class="meta"><span>📍 青羊区</span><span>🎫 免费</span><span>🕗 全天开放</span></div>
+        <button class="speak-btn">▶ 语音导览</button>
+      </div>
+    </article>
+    <article class="card reveal" data-tts="锦里古街紧邻武侯祠，是西蜀历史上最古老、最热闹的商业街之一。入夜后红灯笼次第亮起，川西民居间飘着钵钵鸡与荞面的香气，三国文化与市井烟火在这里奇妙地融合。">
+      <span class="speaking-dot"></span>
+      <div class="card-top t3"><span class="badge">夜游胜地</span>⛩️</div>
+      <div class="card-body">
+        <h3>锦里古街</h3>
+        <div class="stars">★★★★★</div>
+        <p class="desc">红灯笼下的三国风情街，夜景与小吃是它的两张王牌。</p>
+        <div class="meta"><span>📍 武侯区</span><span>🎫 免费</span><span>🕗 全天开放</span></div>
+        <button class="speak-btn">▶ 语音导览</button>
+      </div>
+    </article>
+    <article class="card reveal" data-tts="武侯祠是中国唯一一座君臣合祀祠庙，纪念蜀汉丞相诸葛亮与蜀汉英雄。红墙环绕、翠竹掩映，诉说着出师未捷身先死的悲壮；漫步其中，仿佛能听见三国时代的风云回响。">
+      <span class="speaking-dot"></span>
+      <div class="card-top t4"><span class="badge">三国圣地</span>🏯</div>
+      <div class="card-body">
+        <h3>武侯祠</h3>
+        <div class="stars">★★★★★</div>
+        <p class="desc">全国影响最大的三国遗迹博物馆，红墙竹影极具诗意。</p>
+        <div class="meta"><span>📍 武侯区</span><span>🎫 50元</span><span>🕗 09:00-18:00</span></div>
+        <button class="speak-btn">▶ 语音导览</button>
+      </div>
+    </article>
+    <article class="card reveal" data-tts="都江堰是两千多年前李冰父子主持修建的伟大水利工程，以无坝引水闻名天下，至今仍在灌溉成都平原，造就了天府之国的富饶。站在鱼嘴分水处，你会由衷感叹古人的大智慧！">
+      <span class="speaking-dot"></span>
+      <div class="card-top t5"><span class="badge">世界遗产</span>🌊</div>
+      <div class="card-body">
+        <h3>都江堰</h3>
+        <div class="stars">★★★★★</div>
+        <p class="desc">千年无坝引水奇迹，青山绿水间的超级工程。</p>
+        <div class="meta"><span>📍 都江堰市</span><span>🎫 80元</span><span>🕗 08:00-18:00</span></div>
+        <button class="speak-btn">▶ 语音导览</button>
+      </div>
+    </article>
+    <article class="card reveal" data-tts="青城山素有"青城天下幽"的美誉，群峰环抱、终年常绿，是道教全真道圣地。山间道观隐于苍翠雾霭之中，拾级而上，听松涛、闻鸟鸣，身心都跟着安静下来。">
+      <span class="speaking-dot"></span>
+      <div class="card-top t6"><span class="badge">道教仙山</span>⛰️</div>
+      <div class="card-body">
+        <h3>青城山</h3>
+        <div class="stars">★★★★★</div>
+        <p class="desc">"青城天下幽"，问道、养生、吸氧的绝佳去处。</p>
+        <div class="meta"><span>📍 都江堰市</span><span>🎫 80元</span><span>🕗 08:00-17:30</span></div>
+        <button class="speak-btn">▶ 语音导览</button>
+      </div>
+    </article>
+    <article class="card reveal" data-tts="春熙路是成都最繁华的百年商业街，与潮流地标太古里相连。一边是琳琅满目的老字号与美食，一边是古今交融的时尚街区，还有著名的"爬墙大熊猫"，是购物与夜生活的天堂。">
+      <span class="speaking-dot"></span>
+      <div class="card-top t7"><span class="badge">潮流地标</span>🛍️</div>
+      <div class="card-body">
+        <h3>春熙路 · 太古里</h3>
+        <div class="stars">★★★★☆</div>
+        <p class="desc">百年商圈遇上国际潮流，还有超火"爬墙大熊猫"。</p>
+        <div class="meta"><span>📍 锦江区</span><span>🎫 免费</span><span>🕗 全天开放</span></div>
+        <button class="speak-btn">▶ 语音导览</button>
+      </div>
+    </article>
+    <article class="card reveal" data-tts="人民公园是成都慢生活的灵魂所在。鹤鸣茶社里，竹椅木桌、盖碗茶香，采耳师傅的响镊声叮当作响，老成都的安逸与闲适，全都泡在这一杯清茶里了。">
+      <span class="speaking-dot"></span>
+      <div class="card-top t8"><span class="badge">慢生活</span>🍵</div>
+      <div class="card-body">
+        <h3>人民公园</h3>
+        <div class="stars">★★★★★</div>
+        <p class="desc">鹤鸣茶社百年茶香，采耳、摆龙门阵的安逸之地。</p>
+        <div class="meta"><span>📍 青羊区</span><span>🎫 免费</span><span>🕗 06:30-22:00</span></div>
+        <button class="speak-btn">▶ 语音导览</button>
+      </div>
+    </article>
+  </div>
+  <div style="text-align:center;margin-top:8px"><button class="stop-all">⏹ 停止全部讲解</button></div>
+</section>
+<!-- 美食地图 -->
+<section id="food">
+  <div class="sec-head reveal">
+    <span class="sec-tag">DELICIOUS FOOD</span>
+    <h2 class="sec-title">🌶️ 舌尖上的 <em>成都味道</em></h2>
+    <p class="sec-desc">麻辣鲜香、五味调和 —— 从清晨的担担面到深夜的串串，成都的每一口都是巴适</p>
+  </div>
+  <div class="cards">
+    <article class="card reveal">
+      <div class="card-top t1"><span class="badge">必吃 No.1</span>🍲</div>
+      <div class="card-body">
+        <h3>成都火锅</h3>
+        <div class="stars">★★★★★</div>
+        <p class="desc">九宫格红汤翻涌，毛肚"七上八下"，一口麻辣入魂。</p>
+        <div class="meta"><span>🌶️ 麻辣</span><span class="price">💰 人均 80-120 元</span></div>
+        <p class="food-note">推荐：蜀大侠 / 大龙燚 / 小龙坎</p>
+      </div>
+    </article>
+    <article class="card reveal">
+      <div class="card-top t2"><span class="badge">深夜食堂</span>🍢</div>
+      <div class="card-body">
+        <h3>串串香</h3>
+        <div class="stars">★★★★★</div>
+        <p class="desc">一根竹签串起万物，牛肉郡肝配冰啤，数签签的快乐只有成都懂。</p>
+        <div class="meta"><span>🌶️ 麻辣</span><span class="price">💰 人均 40-70 元</span></div>
+        <p class="food-note">推荐：马路边边 / 钢管厂五区</p>
+      </div>
+    </article>
+    <article class="card reveal">
+      <div class="card-top t3"><span class="badge">经典名点</span>🍜</div>
+      <div class="card-body">
+        <h3>担担面</h3>
+        <div class="stars">★★★★★</div>
+        <p class="desc">面条筋道、肉臊香浓，芝麻酱与红油交织，麻辣带甜一碗见底。</p>
+        <div class="meta"><span>🌶️ 中辣</span><span class="price">💰 8-12 元</span></div>
+        <p class="food-note">推荐：皇城坝小吃 / 龙抄手总店</p>
+      </div>
+    </article>
+    <article class="card reveal">
+      <div class="card-top t4"><span class="badge">皮薄馅嫩</span>🥟</div>
+      <div class="card-body">
+        <h3>龙抄手</h3>
+        <div class="stars">★★★★☆</div>
+        <p class="desc">形似元宝的抄手皮薄如纸、馅嫩汁多，红油与清汤两吃都巴适。</p>
+        <div class="meta"><span>🤤 鲜香</span><span class="price">💰 10-15 元</span></div>
+        <p class="food-note">推荐：龙抄手春熙路总店</p>
+      </div>
+    </article>
+    <article class="card reveal">
+      <div class="card-top t5"><span class="badge">非遗小吃</span>🍡</div>
+      <div class="card-body">
+        <h3>三大炮</h3>
+        <div class="stars">★★★★☆</div>
+        <p class="desc">糯米团子"夺夺夺"三声砸向铜盘，裹黄豆面淋红糖，软糯香甜。</p>
+        <div class="meta"><span>🍬 甜糯</span><span class="price">💰 10 元/份</span></div>
+        <p class="food-note">推荐：宽窄巷子 / 锦里随处可见</p>
+      </div>
+    </article>
+    <article class="card reveal">
+      <div class="card-top t6"><span class="badge">辣度挑战</span>🌶️</div>
+      <div class="card-body">
+        <h3>伤心凉粉</h3>
+        <div class="stars">★★★★☆</div>
+        <p class="desc">一口辣得眼泪汪汪却停不下筷子，故名"伤心"，后劲十足的痛快。</p>
+        <div class="meta"><span>🌶️ 特辣</span><span class="price">💰 8-12 元</span></div>
+        <p class="food-note">推荐：洛带古镇 / 文殊院周边</p>
+      </div>
+    </article>
+    <article class="card reveal">
+      <div class="card-top t7"><span class="badge">深夜硬菜</span>🐰</div>
+      <div class="card-body">
+        <h3>麻辣兔头</h3>
+        <div class="stars">★★★★☆</div>
+        <p class="desc">十余种香料卤制，麻辣鲜香，配冰啤是成都人的夜宵心头好。</p>
+        <div class="meta"><span>🌶️ 麻辣</span><span class="price">💰 12-18 元/个</span></div>
+        <p class="food-note">推荐：双流老妈兔头</p>
+      </div>
+    </article>
+    <article class="card reveal">
+      <div class="card-top t8"><span class="badge">饭后甜点</span>🍬</div>
+      <div class="card-body">
+        <h3>红糖糍粑</h3>
+        <div class="stars">★★★★★</div>
+        <p class="desc">外脆里糯的糍粑裹上红糖浆，趁热吃最过瘾，解辣第一名。</p>
+        <div class="meta"><span>🍬 甜蜜</span><span class="price">💰 10-15 元</span></div>
+        <p class="food-note">推荐：几乎所有火锅店都有</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- 文化体验 -->
+<section id="culture">
+  <div class="sec-head reveal">
+    <span class="sec-tag">CULTURE</span>
+    <h2 class="sec-title">🏮 在地文化 · <em>活着的成都</em></h2>
+    <p class="sec-desc">川剧、茶馆、蜀绣、熊猫……每一种文化都有声有色，点击耳机按钮即可收听介绍</p>
+  </div>
+  <div class="culture-grid">
+    <article class="culture-card reveal" data-tts="变脸是川剧最富盛名的绝技，演员在极短时间内幻变数十张脸谱，忠奸善恶皆在弹指之间。来成都，一定要去剧院看一场酣畅淋漓的川剧变脸与吐火表演！">
+      <div class="ico">🎭</div>
+      <h3>川剧变脸</h3>
+      <p>国家级非遗，一张张脸谱在眨眼间变幻，堪称"东方魔术"。</p>
+      <button class="speak-btn">▶ 语音导览</button>
+    </article>
+    <article class="culture-card reveal" data-tts="成都是中国茶馆最多的城市，人民公园鹤鸣茶社已有百年历史。竹椅木桌盖碗茶，采耳摸牌摆龙门阵，半城烟火慢时光，都在茶馆氤氲的茶香里。">
+      <div class="ico">🍵</div>
+      <h3>茶馆文化</h3>
+      <p>一茶一坐一整天，"摆龙门阵"是成都人最日常的快乐。</p>
+      <button class="speak-btn">▶ 语音导览</button>
+    </article>
+    <article class="culture-card reveal" data-tts="蜀绣针法严谨、色彩明快，蜀锦纹样华丽、工艺繁复，合称蜀中双璧，都被列入国家级非物质文化遗产，是成都最精美的文化名片。">
+      <div class="ico">🧵</div>
+      <h3>蜀绣与蜀锦</h3>
+      <p>"蜀中双璧"千年传承，一针一线绣出蓉城之美。</p>
+      <button class="speak-btn">▶ 语音导览</button>
+    </article>
+    <article class="culture-card reveal" data-tts="采耳俗称掏耳朵，是成都独有的街头休闲艺术。采耳师傅手法轻柔曼妙，各种音叉响器发出清脆悦耳的声响，酥麻舒爽，被称为中国式轻抚慰。">
+      <div class="ico">👂</div>
+      <h3>采耳文化</h3>
+      <p>锃亮的响镊叮当清脆，酥麻入心，成都街头最独特的享受。</p>
+      <button class="speak-btn">▶ 语音导览</button>
+    </article>
+    <article class="culture-card reveal" data-tts="青城山是道教发祥地之一，张天师曾在此创立天师道。山间宫观林立，太极养生、青城素斋、道家茶道，为现代人提供一份宁静的东方智慧。">
+      <div class="ico">☯️</div>
+      <h3>道教养生</h3>
+      <p>问道青城山，太极、素斋、茶道里藏着东方的养生哲学。</p>
+      <button class="speak-btn">▶ 语音导览</button>
+    </article>
+    <article class="culture-card reveal" data-tts="从 IFS 爬墙大熊猫到街头巷尾的熊猫雪糕，熊猫已经成为成都最治愈的城市符号。保护熊猫、守护家园，成都把熊猫文化写进了城市的每一条街道。">
+      <div class="ico">🐼</div>
+      <h3>熊猫文化</h3>
+      <p>从IFS爬墙熊猫到熊猫雪糕，萌文化遍布全城每个角落。</p>
+      <button class="speak-btn">▶ 语音导览</button>
+    </article>
+  </div>
+  <div style="text-align:center;margin-top:8px"><button class="stop-all">⏹ 停止全部讲解</button></div>
+</section>
+<!-- 行程攻略 -->
+<section id="plan">
+  <div class="sec-head reveal">
+    <span class="sec-tag">ITINERARY</span>
+    <h2 class="sec-title">🗺️ 经典 <em>三日行程</em> 推荐</h2>
+    <p class="sec-desc">初次到访成都，照着这份路线走准没错</p>
+  </div>
+  <div class="timeline">
+    <div class="day reveal" data-n="1">
+      <h3><span class="daytag">DAY 1</span> 熊猫 · 市井慢生活</h3>
+      <ul>
+        <li>🌅 <b>上午</b>：大熊猫繁育研究基地 —— <span class="tag-free">看"滚滚"吃竹子</span></li>
+        <li>🍜 <b>中午</b>：宽窄巷子 —— 三大炮、糖油果子边走边吃</li>
+        <li>🍵 <b>下午</b>：人民公园鹤鸣茶社 —— 盖碗茶 + 采耳体验</li>
+        <li>🌆 <b>夜晚</b>：春熙路·太古里 —— 逛街看"爬墙熊猫"与裸眼3D屏</li>
+      </ul>
+      <p class="day-note">💡 小贴士：乘坐地铁3号线直达熊猫基地，返程可顺路逛昭觉寺。</p>
+    </div>
+    <div class="day reveal" data-n="2">
+      <h3><span class="daytag">DAY 2</span> 三国 · 古街夜未央</h3>
+      <ul>
+        <li>🏯 <b>上午</b>：武侯祠 —— 红墙竹影里寻三国记忆</li>
+        <li>⛩️ <b>中午</b>：锦里古街 —— 荞面、钵钵鸡、伤心凉粉大扫荡</li>
+        <li>🎭 <b>夜晚</b>：蜀风雅韵剧院 —— 看川剧变脸 + 吐火绝技</li>
+        <li>🍢 <b>宵夜</b>：玉林路小酒馆 / 建设路夜市撸串</li>
+      </ul>
+      <p class="day-note">💡 小贴士：武侯祠与锦里紧邻，可安排同一天游玩；剧场演出记得提前订票。</p>
+    </div>
+    <div class="day reveal" data-n="3">
+      <h3><span class="daytag">DAY 3</span> 山水 · 问道青城山</h3>
+      <ul>
+        <li>🌊 <b>上午</b>：都江堰 —— 瞻仰千年水利奇迹，看"鱼嘴分水"</li>
+        <li>⛰️ <b>下午</b>：青城山 —— 前山问道、后山吸氧</li>
+        <li>🍲 <b>晚上</b>：回到市区 —— 用一顿火锅为旅程画上句号</li>
+      </ul>
+      <p class="day-note">💡 小贴士：成都西站/犀浦可乘城际列车直达离堆公园站，车程约30分钟。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 出行贴士 -->
+<section id="tips">
+  <div class="sec-head reveal">
+    <span class="sec-tag">TRAVEL TIPS</span>
+    <h2 class="sec-title">🧡 出行 <em>小贴士</em></h2>
+    <p class="sec-desc">六条本地人私藏的实用建议，让旅途更丝滑</p>
+  </div>
+  <div class="tips-grid">
+    <div class="tip reveal"><div class="ticon">📅</div><div><h4>最佳旅行时间</h4><p>3-6月与9-11月气候最宜人；夏季闷热多雨，记得带伞与防晒。</p></div></div>
+    <div class="tip reveal"><div class="ticon">🚇</div><div><h4>市内交通</h4><p>地铁已覆盖全部核心景点，下载"天府通"APP或直接刷乘车码即可。</p></div></div>
+    <div class="tip reveal"><div class="ticon">🌶️</div><div><h4>点菜秘诀</h4><p>首次尝试建议"微辣"，可以要求"免麻少辣"；火锅蘸碟一定要加蒜泥香油！</p></div></div>
+    <div class="tip reveal"><div class="ticon">🐼</div><div><h4>熊猫基地攻略</h4><p>务必赶早，7:30开园第一批入园，熊猫上午进食最活跃，午后基本在睡觉。</p></div></div>
+    <div class="tip reveal"><div class="ticon">🎫</div><div><h4>提前预约</h4><p>武侯祠、都江堰等热门景点建议提前在官方平台预约购票，节假日人流极大。</p></div></div>
+    <div class="tip reveal"><div class="ticon">🛍️</div><div><h4>伴手礼清单</h4><p>郫县豆瓣、蜀绣丝巾、熊猫玩偶、张飞牛肉、蒙顶山茶，都是不错的选择。</p></div></div>
+  </div>
+</section>
+</main>
+<!-- 页脚 -->
+<footer>
+  <div class="foot-inner">
+    <div>
+      <a class="logo" href="#top" style="color:#fff"><i>🐼</i>蓉城·成都旅游网</a>
+      <p class="foot-brief" style="margin-top:12px">成都，古称"蓉城"，4500年文明史、2300年建城史孕育出独特的悠闲气质。在这里，传统与潮流交织，烟火与诗意共生。</p>
+    </div>
+    <div>
+      <h4>快速导航</h4>
+      <a href="#spots">景点推荐</a>
+      <a href="#food">美食地图</a>
+      <a href="#culture">文化体验</a>
+      <a href="#plan">行程攻略</a>
+    </div>
+    <div>
+      <h4>联系我们</h4>
+      <a>📍 四川省成都市武侯区天府大道</a>
+      <a>📞 028-8888-6666</a>
+      <a>✉️ service@chengdu-travel.cn</a>
+      <a>🕗 09:00 - 18:00（周一至周日）</a>
+    </div>
+  </div>
+  <div class="foot-bottom">成都旅游网 · 本站为学习演示作品 · © 2026 Chengdu Travel. All Rights Reserved.</div>
+</footer>
+
+<button id="topBtn" title="返回顶部">↑</button>
+
+<script>
+/* ========== 1. 滚动显现动画 ========== */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ========== 2. 导航高亮 & 返回顶部 ========== */
+const secs = [...document.querySelectorAll('main section[id]')];
+const navLinks = document.querySelectorAll('.nav-links a');
+const topBtn = document.getElementById('topBtn');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY + 100;
+  let cur = '';
+  secs.forEach(s => { if (s.offsetTop <= y) cur = s.id; });
+  navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur));
+  topBtn.classList.toggle('show', window.scrollY > 500);
+}, { passive: true });
+topBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+/* ========== 3. 背景音乐：Web Audio 实时合成"成都印象" ========== */
+const bgPlayBtn = document.getElementById('bgPlay');
+const volInput = document.getElementById('vol');
+const disc = document.getElementById('disc');
+const eq = document.getElementById('eq');
+let actx = null, mGain = null, timer = null, nextTime = 0, noteIdx = 0, playing = false;
+const MELODY = [523.25, 587.33, 659.25, 783.99, 659.25, 587.33, 523.25, 392.00,
+  440.00, 523.25, 440.00, 392.00, 587.33, 659.25, 783.99, 880.00, 783.99, 659.25, 587.33, 523.25];
+
+function ensureCtx() {
+  if (actx) return;
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) { alert('当前浏览器不支持 Web Audio API，无法播放背景音乐。'); return; }
+  actx = new AC();
+  mGain = actx.createGain();
+  mGain.gain.value = parseFloat(volInput.value);
+  mGain.connect(actx.destination);
+}
+function playNote(freq, t0, dur, vol) {
+  const o = actx.createOscillator(), g = actx.createGain();
+  o.type = 'triangle';
+  o.frequency.value = freq;
+  g.gain.setValueAtTime(0.0001, t0);
+  g.gain.linearRampToValueAtTime(vol, t0 + 0.05);
+  g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+  o.connect(g); g.connect(mGain);
+  o.start(t0); o.stop(t0 + dur + 0.1);
+}
+function schedule() {
+  while (nextTime < actx.currentTime + 1.3) {
+    const f = MELODY[noteIdx % MELODY.length];
+    playNote(f, nextTime, 0.4, 0.16);
+    if (noteIdx % 4 === 0) playNote(f / 2, nextTime, 0.9, 0.10);
+    nextTime += 0.44;
+    noteIdx++;
+  }
+  timer = setTimeout(schedule, 320);
+}
+function startMusic() {
+  ensureCtx();
+  if (!actx) return;
+  actx.resume().then(() => {
+    if (nextTime <= actx.currentTime) nextTime = actx.currentTime + 0.06;
+    schedule();
+    playing = true;
+    bgPlayBtn.textContent = '❚❚';
+    disc.classList.add('playing');
+    eq.classList.remove('paused');
+  }).catch(() => {});
+}
+function stopMusic() {
+  if (timer) { clearTimeout(timer); timer = null; }
+  if (actx) actx.suspend().catch(() => {});
+  playing = false;
+  bgPlayBtn.textContent = '▶';
+  disc.classList.remove('playing');
+  eq.classList.add('paused');
+}
+bgPlayBtn.addEventListener('click', () => { playing ? stopMusic() : startMusic(); });
+volInput.addEventListener('input', () => {
+  if (mGain && actx) mGain.gain.setTargetAtTime(parseFloat(volInput.value), actx.currentTime, 0.05);
+});
+/* ========== 4. 景点语音导览（浏览器 TTS 合成） ========== */
+const synth = window.speechSynthesis;
+let utterance = null, curCard = null, voicePaused = false;
+
+function zhVoice() {
+  const vs = synth.getVoices();
+  return vs.find(v => v.lang && v.lang.toLowerCase().startsWith('zh')) || null;
+}
+function resetBtnLabels() {
+  document.querySelectorAll('.speak-btn').forEach(b => {
+    b.classList.remove('speaking', 'paused');
+    b.innerHTML = '▶ 语音导览';
+  });
+}
+function setBtn(btn, state) {
+  resetBtnLabels();
+  if (state === 'speaking') { btn.classList.add('speaking'); btn.innerHTML = '⏸ 播放中…'; }
+  if (state === 'paused')   { btn.classList.add('paused');   btn.innerHTML = '▶ 已暂停 · 点击继续'; }
+}
+function resetSpeech() {
+  document.querySelectorAll('.card.speaking, .culture-card.speaking').forEach(c => c.classList.remove('speaking'));
+  resetBtnLabels();
+  utterance = null; curCard = null; voicePaused = false;
+}
+function speakFor(btn) {
+  if (!synth) { alert('浏览器不支持语音合成，请使用 Chrome 或 Edge 打开体验。'); return; }
+  const card = btn.closest('.card') || btn.closest('.culture-card');
+  const txt = card.getAttribute('data-tts');
+  if (curCard === card && synth.speaking && !voicePaused) {   
+    synth.pause(); voicePaused = true; setBtn(btn, 'paused'); return;
+  }
+  if (curCard === card && voicePaused) {                       // 暂停中 → 继续
+    synth.resume(); voicePaused = false; setBtn(btn, 'speaking'); return;
+  }
+  stopAll();
+  utterance = new SpeechSynthesisUtterance(txt);
+  utterance.lang = 'zh-CN';
+  utterance.rate = 0.95;
+  const v = zhVoice(); if (v) utterance.voice = v;
+  utterance.onend = resetSpeech;
+  utterance.onerror = resetSpeech;
+  synth.speak(utterance);
+  curCard = card; voicePaused = false;
+  card.classList.add('speaking');
+  setBtn(btn, 'speaking');
+}
+function stopAll() { if (synth) synth.cancel(); resetSpeech(); }
+document.querySelectorAll('.speak-btn').forEach(b => b.addEventListener('click', () => speakFor(b)));
+document.querySelectorAll('.stop-all').forEach(b => b.addEventListener('click', stopAll));
+if (synth) { synth.onvoiceschanged = function(){}; synth.getVoices(); }
+
+</script>
+</body>
+</html>
+
